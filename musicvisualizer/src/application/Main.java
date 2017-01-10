@@ -16,7 +16,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			musicPlayer.playClip("Ressources/LRMonoPhase4.wav");
+			musicPlayer.playClip("LRMonoPhase4.wav");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
