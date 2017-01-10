@@ -1,13 +1,13 @@
 package application;
 	
 import javafx.application.Application;
-import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javax.sound.*;
+import javafx.stage.Stage;
 
 
 public class Main extends Application {
+	MusicPlayer musicPlayer = new MusicPlayer();
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -16,6 +16,7 @@ public class Main extends Application {
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			musicPlayer.playClip("Ressources/LRMonoPhase4.wav");
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
