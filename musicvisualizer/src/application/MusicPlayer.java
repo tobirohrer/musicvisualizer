@@ -3,9 +3,10 @@ package application;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
+
+import Model.PlayAudio;
 
 public class MusicPlayer {
 	public void playClip(String audioFile) {
@@ -14,61 +15,21 @@ public class MusicPlayer {
 					.getAudioInputStream(this.getClass().getResourceAsStream(audioFile));
 			
 			AudioFormat originalFormat = audioInputStream.getFormat();
-
+			//Todo: Umwaldung von input in decoded Stream, falls inputformat nicht "das Richtige" ist.
 			AudioInputStream decodedStream = audioInputStream;
 			
 			DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioInputStream.getFormat());
 			
-			SourceDataLine test = (SourceDataLine)AudioSystem.getLine(info);
+			SourceDataLine sourceDataLine = (SourceDataLine)AudioSystem.getLine(info);
 			
-			test.open(originalFormat);
-			test.start();
+			sourceDataLine.open(originalFormat);
+			sourceDataLine.start();
+				
+			Thread playAudio = new Thread(new PlayAudio(sourceDataLine, decodedStream));
+			playAudio.start();
 			
-			byte[] data = new byte[4096];
-					int nBytesRead;
-					while(true){
-					nBytesRead = decodedStream.read(data,0,data.length);
-
-					
-					
-					if(nBytesRead == -1)
-						break;
-					 test.write(data, 0, nBytesRead);
-					}
-					
-								
-			System.out.println(test.isActive());		
-			/*
-			Clip clip = (Clip) AudioSystem.getLine(info);
+			System.out.println(sourceDataLine.isActive());		
 			
-			clip.addLineListener(new LineListener() {
-				public void update(LineEvent e) {
-					if (e.getType() == LineEvent.Type.STOP) {
-				;
-						synchronized (clip) {
-							clip.notify();
-						}
-					}
-				}
-			});
-			clip.open(audioInputStream);
-			
-			clip.setFramePosition(0);
-			clip.start();
-			
-			long frameLength = clip.getFrameLength();
-			frameLength = frameLength -1000; 
-			
-			while(clip.getFramePosition() < frameLength){
-				//doSomething
-			}
-			
-			synchronized (clip) {
-				clip.wait();
-			}
-			clip.drain();
-			clip.close();
-			*/
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
