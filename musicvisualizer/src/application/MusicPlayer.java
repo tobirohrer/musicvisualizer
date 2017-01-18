@@ -5,8 +5,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
+import javax.sound.sampled.SourceDataLine;
 
 public class MusicPlayer {
 	public void playClip(String audioFile) {
@@ -15,11 +14,31 @@ public class MusicPlayer {
 					.getAudioInputStream(this.getClass().getResourceAsStream(audioFile));
 			
 			AudioFormat originalFormat = audioInputStream.getFormat();
+
+			AudioInputStream decodedStream = audioInputStream;
 			
-			System.out.println("Das Format des audioFiles ist " + originalFormat);
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioInputStream.getFormat());
 			
-			DataLine.Info info = new DataLine.Info(Clip.class, audioInputStream.getFormat());
+			SourceDataLine test = (SourceDataLine)AudioSystem.getLine(info);
 			
+			test.open(originalFormat);
+			test.start();
+			
+			byte[] data = new byte[4096];
+					int nBytesRead;
+					while(true){
+					nBytesRead = decodedStream.read(data,0,data.length);
+
+					
+					
+					if(nBytesRead == -1)
+						break;
+					 test.write(data, 0, nBytesRead);
+					}
+					
+								
+			System.out.println(test.isActive());		
+			/*
 			Clip clip = (Clip) AudioSystem.getLine(info);
 			
 			clip.addLineListener(new LineListener() {
@@ -49,8 +68,10 @@ public class MusicPlayer {
 			}
 			clip.drain();
 			clip.close();
+			*/
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		
 	}
 }
