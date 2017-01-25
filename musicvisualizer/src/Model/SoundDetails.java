@@ -5,9 +5,14 @@ import java.util.Observable;
 public class SoundDetails extends Observable implements Runnable {
 
 	private byte[] data;
+	long amount = 0;
 	
 	public SoundDetails(byte[] data){
 		this.data = data;
+	}
+	
+	public long getAmount(){
+		return amount;
 	}
 	
 	@Override
@@ -16,12 +21,14 @@ public class SoundDetails extends Observable implements Runnable {
 		while(true){
 			try{
 				Thread.sleep(20);
-				long amount = 0;
+				amount = 0;
 				for(int i = 0; i <4096;i++){
 					amount = amount+data[i];
 				}
 
 				System.out.println(amount);
+				setChanged();
+				notifyObservers();
 					
 			}catch(Exception e){
 				
