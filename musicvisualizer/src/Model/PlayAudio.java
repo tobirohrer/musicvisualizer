@@ -24,16 +24,15 @@ public class PlayAudio implements Runnable {
 			// read Data into the Buffer data.
 			try {
 				nBytesRead = decodedStream.read(data, 0, data.length);
-
+				
 				System.out.println(data[0]);
+				
 				if (nBytesRead == -1)
 					break;
 				sourceDataLine.write(data, 0, nBytesRead);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-
 	}
 }

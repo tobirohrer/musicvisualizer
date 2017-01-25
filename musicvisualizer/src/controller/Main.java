@@ -1,4 +1,4 @@
-package application;
+package controller;
 	
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-	MusicPlayer musicPlayer = new MusicPlayer();
+	StreamManager musicPlayer = new StreamManager();
 	@Override
 	public void start(Stage primaryStage) {
 		try {

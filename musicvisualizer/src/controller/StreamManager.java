@@ -1,4 +1,4 @@
-package application;
+package controller;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -8,16 +8,17 @@ import javax.sound.sampled.SourceDataLine;
 
 import Model.PlayAudio;
 
-public class MusicPlayer {
+public class StreamManager {
 	public void playClip(String audioFile) {
 		try {
 			AudioInputStream audioInputStream = AudioSystem
 					.getAudioInputStream(this.getClass().getResourceAsStream(audioFile));
 			
 			AudioFormat originalFormat = audioInputStream.getFormat();
-			//Todo: Umwaldung von input in decoded Stream, falls inputformat nicht "das Richtige" ist.
-			AudioInputStream decodedStream = audioInputStream;
 			
+			//Todo: Umwaldung von input in decoded Stream, falls inputformat nicht "das Richtige" ist.
+			
+			AudioInputStream decodedStream = audioInputStream;
 			DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioInputStream.getFormat());
 			
 			SourceDataLine sourceDataLine = (SourceDataLine)AudioSystem.getLine(info);
