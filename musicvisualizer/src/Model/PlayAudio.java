@@ -19,13 +19,13 @@ public class PlayAudio implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		byte[] data = new byte[4096];
+		Thread soundDetails = new Thread(new SoundDetails(data));
+		soundDetails.start();
 		int nBytesRead;
 		while (true) {
 			// read Data into the Buffer data.
 			try {
-				nBytesRead = decodedStream.read(data, 0, data.length);
-				
-				System.out.println(data[0]);
+				nBytesRead = decodedStream.read(data, 0, data.length);	
 				
 				if (nBytesRead == -1)
 					break;
