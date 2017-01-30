@@ -7,8 +7,8 @@ import javax.sound.sampled.SourceDataLine;
 
 public class PlayAudio implements Runnable {
 
-	SourceDataLine sourceDataLine;
-	AudioInputStream decodedStream;
+	private SourceDataLine sourceDataLine;
+	private AudioInputStream decodedStream;
 
 	public PlayAudio(SourceDataLine sourceDataLine, AudioInputStream decodedStream) {
 		this.sourceDataLine = sourceDataLine;
@@ -17,14 +17,21 @@ public class PlayAudio implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		byte[] data = new byte[4096];
-		Thread soundDetails = new Thread(new SoundDetails(data));
-		soundDetails.start();
+		
+		//wire SoundDetails and soundDEtailsFX together (Observer Observable)
+		SoundDetails soundDetails = new SoundDetails(data);
+		Thread soundDetailsThread = new Thread(soundDetails);	
+		SoundDetailsFX soundDetailsFX = new SoundDetailsFX(soundDetails);
+		soundDetails.addObserver(soundDetailsFX);
+		
+		soundDetailsThread.start();	
+		
 		int nBytesRead;
 		while (true) {
-			// read Data into the Buffer data.
+			
 			try {
+				//read Data into the Buffer data.
 				nBytesRead = decodedStream.read(data, 0, data.length);	
 				
 				if (nBytesRead == -1)

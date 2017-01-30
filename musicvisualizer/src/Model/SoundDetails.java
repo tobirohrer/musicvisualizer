@@ -25,8 +25,6 @@ public class SoundDetails extends Observable implements Runnable {
 				for(int i = 0; i <4096;i++){
 					amount = amount+data[i];
 				}
-
-				System.out.println(amount);
 				setChanged();
 				notifyObservers();
 					

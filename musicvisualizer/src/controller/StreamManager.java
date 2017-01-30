@@ -27,9 +27,8 @@ public class StreamManager {
 			sourceDataLine.start();
 				
 			Thread playAudio = new Thread(new PlayAudio(sourceDataLine, decodedStream));
-			playAudio.start();
 			
-			System.out.println(sourceDataLine.isActive());		
+			playAudio.start();
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
