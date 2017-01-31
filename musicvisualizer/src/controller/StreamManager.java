@@ -6,9 +6,17 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
-import Model.PlayAudio;
+import Model.AudioPlayer;
+import Model.SoundDetails;
 
 public class StreamManager {
+	
+	private SoundDetails soundDetails;
+	
+	public StreamManager(SoundDetails soundDetails){
+		this.soundDetails = soundDetails;
+	}
+	
 	public void playClip(String audioFile) {
 		try {
 			AudioInputStream audioInputStream = AudioSystem
@@ -26,9 +34,9 @@ public class StreamManager {
 			sourceDataLine.open(originalFormat);
 			sourceDataLine.start();
 				
-			Thread playAudio = new Thread(new PlayAudio(sourceDataLine, decodedStream));
+			Thread audioPlayer = new Thread(new AudioPlayer(sourceDataLine, decodedStream, soundDetails));
 			
-			playAudio.start();
+			audioPlayer.start();
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();

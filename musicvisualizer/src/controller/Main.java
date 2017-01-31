@@ -1,28 +1,40 @@
 package controller;
 	
+import Model.SoundDetails;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
 public class Main extends Application {
-	StreamManager musicPlayer = new StreamManager();
+
+	private static SoundDetails soundDetails;
+	
+	public static void main(String[] args) {
+		
+		soundDetails = new SoundDetails();
+		Thread soundDetailsThread = new Thread(soundDetails);
+		soundDetailsThread.start();
+		StreamManager streamManager = new StreamManager(soundDetails);
+		streamManager.playClip("LRMonoPhase4.wav");
+		launch(args);
+	}
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			BorderPane root = new BorderPane();
+			Label label = new Label();
+			StackPane root = new StackPane();
+			root.getChildren().add(label);
 			Scene scene = new Scene(root,400,400);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			musicPlayer.playClip("LRMonoPhase4.wav");
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

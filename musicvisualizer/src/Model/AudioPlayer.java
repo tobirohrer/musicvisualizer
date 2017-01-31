@@ -5,27 +5,24 @@ import java.io.IOException;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.SourceDataLine;
 
-public class PlayAudio implements Runnable {
+public class AudioPlayer implements Runnable {
 
 	private SourceDataLine sourceDataLine;
 	private AudioInputStream decodedStream;
+	private SoundDetails soundDetails;
 
-	public PlayAudio(SourceDataLine sourceDataLine, AudioInputStream decodedStream) {
+	public AudioPlayer(SourceDataLine sourceDataLine, AudioInputStream decodedStream, SoundDetails soundDetails) {
 		this.sourceDataLine = sourceDataLine;
 		this.decodedStream = decodedStream;
+		this.soundDetails = soundDetails;
 	}
 
 	@Override
 	public void run() {
 		byte[] data = new byte[4096];
 		
-		//wire SoundDetails and soundDEtailsFX together (Observer Observable)
-		SoundDetails soundDetails = new SoundDetails(data);
-		Thread soundDetailsThread = new Thread(soundDetails);	
-		SoundDetailsFX soundDetailsFX = new SoundDetailsFX(soundDetails);
-		soundDetails.addObserver(soundDetailsFX);
-		
-		soundDetailsThread.start();	
+		//wire AudioPlayer and AudioDetails together.
+		soundDetails.setSoundData(data);
 		
 		int nBytesRead;
 		while (true) {
@@ -33,7 +30,6 @@ public class PlayAudio implements Runnable {
 			try {
 				//read Data into the Buffer data.
 				nBytesRead = decodedStream.read(data, 0, data.length);	
-				
 				if (nBytesRead == -1)
 					break;
 				sourceDataLine.write(data, 0, nBytesRead);

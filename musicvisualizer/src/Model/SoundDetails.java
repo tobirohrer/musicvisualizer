@@ -2,12 +2,12 @@ package Model;
 
 import java.util.Observable;
 
-public class SoundDetails extends Observable implements Runnable {
+public class SoundDetails extends Observable implements Runnable{
 
 	private byte[] data;
 	long amount = 0;
-	
-	public SoundDetails(byte[] data){
+
+	public void setSoundData(byte[] data){
 		this.data = data;
 	}
 	
@@ -19,18 +19,19 @@ public class SoundDetails extends Observable implements Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		while(true){
-			try{
+			try{		
 				Thread.sleep(20);
 				amount = 0;
 				for(int i = 0; i <4096;i++){
 					amount = amount+data[i];
 				}
-				setChanged();
-				notifyObservers();
-					
+				
+				System.out.println(amount);
+
 			}catch(Exception e){
 				
 			}
 		}
 	}
+
 }
