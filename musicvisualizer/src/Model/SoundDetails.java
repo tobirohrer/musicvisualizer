@@ -14,7 +14,7 @@ public class SoundDetails extends Observable implements Runnable{
 	public long getAmount(){
 		return amount;
 	}
-	
+		
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

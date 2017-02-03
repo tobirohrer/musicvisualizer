@@ -17,8 +17,8 @@ public class Main extends Application {
 		soundDetails = new SoundDetails();
 		Thread soundDetailsThread = new Thread(soundDetails);
 		soundDetailsThread.start();
-		StreamManager streamManager = new StreamManager(soundDetails);
-		streamManager.playClip("LRMonoPhase4.wav");
+		StreamManager streamManager = new StreamManager(soundDetails,"LRMonoPhase4.wav");
+		streamManager.openStreamsAndStartAudioPlayer();
 		launch(args);
 	}
 	
